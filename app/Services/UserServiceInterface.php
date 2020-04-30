@@ -11,5 +11,5 @@ namespace App\Services;
 
 interface UserServiceInterface
 {
-    function registerUser($request);
+    public function registerUser($request);
 }

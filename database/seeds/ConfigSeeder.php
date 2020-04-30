@@ -11,11 +11,9 @@ class ConfigSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Config::class, function () {
-            return [
-                'name' => 'registration-credit',
-                'value' => '100000'
-            ];
-        });
+        factory(\App\Models\Config::class, 1)->create([
+            'name' => 'registration-credit',
+            'value' => '100000'
+        ]);
     }
 }

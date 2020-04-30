@@ -4,33 +4,49 @@ namespace App\Services;
 
 use App\Models\Config;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserService implements UserServiceInterface
 {
     public function registerUser($request)
     {
-        $user = User::create([
-            'username' => $request->input('user.username'),
-            'email' => $request->input('user.email'),
-            'password' => $request->input('user.password'),
-        ]);
+        return DB::transaction(function () use ($request){
+            $user = User::create([
+                'username' => $request->input('user.username'),
+                'email' => $request->input('user.email'),
+                'password' => $request->input('user.password'),
+            ]);
 
-        return $this->storeRegistrationCredit($user);
+            return $this->storeRegistrationCredit($user);
+
+        });
     }
 
     private function storeRegistrationCredit($user)
     {
+        $registration_config = $this->getRegistrationCreditConfig();
+
+        if(is_null($registration_config))
+            return [];
+
         $user->transactions()->create([
-            'credit' => $this->getRegistrationCredit()
+            'credit' => $registration_config
         ]);
 
         $user->credit()->create([
-            'value' => $this->getRegistrationCredit()
+            'value' => $registration_config
         ]);
+
+        return $user;
     }
 
-    private function getRegistrationCredit()
+    private function getRegistrationCreditConfig()
     {
-        return Config::where('name','registration-credit');
+        $config = Config::where('name','registration-credit')->first();
+        if(is_null($config))
+            return null;
+
+        return $config->value;
+
     }
 }

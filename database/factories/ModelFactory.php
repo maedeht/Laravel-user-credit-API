@@ -54,3 +54,11 @@ $factory->define(App\Models\Tag::class, function (\Faker\Generator $faker) {
         'name' => $faker->unique()->word,
     ];
 });
+
+$factory->define(App\Models\Config::class, function (\Faker\Generator $faker) {
+
+    return [
+        'name' => $faker->word,
+        'value' => $faker->word,
+    ];
+});
