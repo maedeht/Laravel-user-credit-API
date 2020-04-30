@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Transaction;
-use App\Models\UserCredit;
 use App\Services\UserServiceInterface;
-use App\User;
 use App\Http\Requests\Api\LoginUser;
 use App\Http\Requests\Api\RegisterUser;
 use App\RealWorld\Transformers\UserTransformer;

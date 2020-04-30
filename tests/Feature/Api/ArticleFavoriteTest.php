@@ -15,7 +15,7 @@ class ArticleFavoriteTest extends TestCase
     {
         parent::setUp();
 
-        $this->article = $this->user->articles()->save(factory(\App\Article::class)->make());
+        $this->article = $this->user->articles()->save(factory(\App\Models\Article::class)->make());
     }
 
     /** @test */

@@ -24,7 +24,7 @@ class FeedTest extends TestCase
     /** @test */
     public function it_returns_articles_of_users_followed_by_the_logged_in_user()
     {
-        $articles = $this->user->articles()->saveMany(factory(\App\Article::class)->times(2)->make());
+        $articles = $this->user->articles()->saveMany(factory(\App\Models\Article::class)->times(2)->make());
 
         $this->loggedInUser->follow($this->user);
 
@@ -62,7 +62,7 @@ class FeedTest extends TestCase
     /** @test */
     public function it_returns_the_correct_feed_articles_with_limit_and_offset()
     {
-        $this->user->articles()->saveMany(factory(\App\Article::class)->times(25)->make());
+        $this->user->articles()->saveMany(factory(\App\Models\Article::class)->times(25)->make());
 
         $this->loggedInUser->follow($this->user);
 
@@ -100,7 +100,7 @@ class FeedTest extends TestCase
     /** @test */
     public function it_returns_the_feed_articles_with_appropriate_favorite_and_following_fields()
     {
-        $article = $this->user->articles()->save(factory(\App\Article::class)->make());
+        $article = $this->user->articles()->save(factory(\App\Models\Article::class)->make());
 
         $this->loggedInUser->follow($this->user);
 

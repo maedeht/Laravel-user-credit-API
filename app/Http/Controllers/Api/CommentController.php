@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Article;
-use App\Comment;
+use App\Models\Article;
+use App\Models\Comment;
 use App\Http\Requests\Api\CreateComment;
 use App\Http\Requests\Api\DeleteComment;
 use App\RealWorld\Transformers\CommentTransformer;

@@ -12,7 +12,7 @@ class TagTest extends TestCase
     /** @test */
     public function it_returns_an_array_of_tags()
     {
-        $tags = factory(\App\Tag::class)->times(5)->create();
+        $tags = factory(\App\Models\Tag::class)->times(5)->create();
 
         $response = $this->getJson('/api/tags');
 

@@ -39,7 +39,7 @@ $factory->define(App\Models\Comment::class, function (\Faker\Generator $faker) {
     static $users;
     static $reduce = 999;
 
-    $users = $users ?: \App\User::all();
+    $users = $users ?: \App\Models\User::all();
 
     return [
         'body' => $faker->paragraph($faker->numberBetween(1, 5)),

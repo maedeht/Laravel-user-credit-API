@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $users = factory(\App\User::class)->times(2)->create();
+        $users = factory(\App\Models\User::class)->times(2)->create();
 
         $this->loggedInUser = $users[0];
 

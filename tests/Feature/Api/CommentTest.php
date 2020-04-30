@@ -15,7 +15,7 @@ class CommentTest extends TestCase
     {
         parent::setUp();
 
-        $this->article = $this->user->articles()->save(factory(\App\Article::class)->make());
+        $this->article = $this->user->articles()->save(factory(\App\Models\Article::class)->make());
     }
 
     /** @test */
@@ -45,7 +45,7 @@ class CommentTest extends TestCase
     {
         $comment = $this->article
             ->comments()
-            ->save(factory(\App\Comment::class)->make(['user_id' => $this->loggedInUser->id]));
+            ->save(factory(\App\Models\Comment::class)->make(['user_id' => $this->loggedInUser->id]));
 
         $response = $this->deleteJson("/api/articles/{$this->article->slug}/comments/{$comment->id}", [], $this->headers);
 
@@ -59,7 +59,7 @@ class CommentTest extends TestCase
     {
         $comments = $this->article
             ->comments()
-            ->saveMany(factory(\App\Comment::class)->times(2)->make(['user_id' => $this->user->id]));
+            ->saveMany(factory(\App\Models\Comment::class)->times(2)->make(['user_id' => $this->user->id]));
 
         $response = $this->getJson("/api/articles/{$this->article->slug}/comments", [], $this->headers);
 
@@ -87,7 +87,7 @@ class CommentTest extends TestCase
     {
         $comment = $this->article
             ->comments()
-            ->save(factory(\App\Comment::class)->make(['user_id' => $this->user->id]));
+            ->save(factory(\App\Models\Comment::class)->make(['user_id' => $this->user->id]));
 
         $response = $this->deleteJson("/api/articles/{$this->article->slug}/comments/{$comment->id}", [], $this->headers);
 
@@ -101,7 +101,7 @@ class CommentTest extends TestCase
     {
         $comment = $this->article
             ->comments()
-            ->save(factory(\App\Comment::class)->make(['user_id' => $this->loggedInUser->id]));
+            ->save(factory(\App\Models\Comment::class)->make(['user_id' => $this->loggedInUser->id]));
 
         $response = $this->postJson("/api/articles/{$this->article->slug}/comments");
 

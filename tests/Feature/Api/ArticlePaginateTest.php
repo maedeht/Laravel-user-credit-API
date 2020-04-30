@@ -12,7 +12,7 @@ class ArticlePaginateTest extends TestCase
     /** @test */
     public function it_returns_the_correct_articles_with_limit_and_offset()
     {
-        $this->user->articles()->saveMany(factory(\App\Article::class)->times(25)->make());
+        $this->user->articles()->saveMany(factory(\App\Models\Article::class)->times(25)->make());
 
         $response = $this->getJson('/api/articles');
 

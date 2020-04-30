@@ -2,7 +2,7 @@
 
 namespace App\RealWorld\Favorite;
 
-use App\User;
+use App\Models\User;
 
 trait Favoritable
 {

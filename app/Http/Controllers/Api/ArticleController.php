@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Tag;
-use App\Article;
+use App\Models\Tag;
+use App\Models\Article;
 use App\RealWorld\Paginate\Paginate;
 use App\RealWorld\Filters\ArticleFilter;
 use App\Http\Requests\Api\CreateArticle;

@@ -2,7 +2,7 @@
 
 namespace App\RealWorld\Follow;
 
-use App\User;
+use App\Models\User;
 
 trait Followable
 {

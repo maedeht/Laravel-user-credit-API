@@ -2,7 +2,7 @@
 
 namespace App\RealWorld\Favorite;
 
-use App\Article;
+use App\Models\Article;
 
 trait HasFavorite
 {

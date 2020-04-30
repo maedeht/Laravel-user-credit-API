@@ -32,15 +32,15 @@ class ArticleFilterTest extends TestCase
     /** @test */
     public function it_returns_the_articles_with_the_tag_along_with_correct_total_article_count()
     {
-        $tags = factory(\App\Tag::class)->times(2)->create();
+        $tags = factory(\App\Models\Tag::class)->times(2)->create();
 
         $articles = $this->user->articles()
-            ->saveMany(factory(\App\Article::class)->times(3)->make())
+            ->saveMany(factory(\App\Models\Article::class)->times(3)->make())
             ->each(function ($article) use ($tags) {
                 $article->tags()->attach($tags);
             });
 
-        $this->user->articles()->saveMany(factory(\App\Article::class)->times(5)->make());
+        $this->user->articles()->saveMany(factory(\App\Models\Article::class)->times(5)->make());
 
         $response = $this->getJson("/api/articles?tag={$tags[0]->name}");
 
@@ -90,8 +90,8 @@ class ArticleFilterTest extends TestCase
     /** @test */
     public function it_returns_the_articles_by_the_author_along_with_correct_total_article_count()
     {
-        $articles = $this->user->articles()->saveMany(factory(\App\Article::class)->times(3)->make());
-        $this->loggedInUser->articles()->saveMany(factory(\App\Article::class)->times(5)->make());
+        $articles = $this->user->articles()->saveMany(factory(\App\Models\Article::class)->times(3)->make());
+        $this->loggedInUser->articles()->saveMany(factory(\App\Models\Article::class)->times(5)->make());
 
         $response = $this->getJson("/api/articles?author={$this->user->username}");
 
@@ -147,7 +147,7 @@ class ArticleFilterTest extends TestCase
     /** @test */
     public function it_returns_the_articles_favorited_by_the_user_along_with_correct_total_article_count()
     {
-        $articles = $this->loggedInUser->articles()->saveMany(factory(\App\Article::class)->times(5)->make());
+        $articles = $this->loggedInUser->articles()->saveMany(factory(\App\Models\Article::class)->times(5)->make());
         $this->user->favorite($articles[0]);
         $this->user->favorite($articles[2]);
         $this->user->favorite($articles[4]);
