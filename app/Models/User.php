@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use JWTAuth;
 use App\RealWorld\Follow\Followable;
@@ -90,5 +90,20 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return 'username';
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function credit()
+    {
+        return $this->hasOne(UserCredit::class);
     }
 }

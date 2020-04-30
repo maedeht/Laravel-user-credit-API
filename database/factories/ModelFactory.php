@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (\Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (\Faker\Generator $faker) {
 
     return [
         'username' => str_replace('.', '', $faker->unique()->userName),
@@ -22,7 +22,7 @@ $factory->define(App\User::class, function (\Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Article::class, function (\Faker\Generator $faker) {
+$factory->define(App\Models\Article::class, function (\Faker\Generator $faker) {
 
     static $reduce = 999;
 
@@ -34,7 +34,7 @@ $factory->define(App\Article::class, function (\Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Comment::class, function (\Faker\Generator $faker) {
+$factory->define(App\Models\Comment::class, function (\Faker\Generator $faker) {
 
     static $users;
     static $reduce = 999;
@@ -48,7 +48,7 @@ $factory->define(App\Comment::class, function (\Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Tag::class, function (\Faker\Generator $faker) {
+$factory->define(App\Models\Tag::class, function (\Faker\Generator $faker) {
 
     return [
         'name' => $faker->unique()->word,

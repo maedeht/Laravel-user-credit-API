@@ -69,15 +69,15 @@ class DummyDataSeeder extends Seeder
      */
     public function run(\Faker\Generator $faker)
     {
-        $users = factory(\App\User::class)->times($this->totalUsers)->create();
+        $users = factory(\App\Models\User::class)->times($this->totalUsers)->create();
 
-        $tags = factory(\App\Tag::class)->times($this->totalTags)->create();
+        $tags = factory(\App\Models\Tag::class)->times($this->totalTags)->create();
 
         $users->random((int) $this->totalUsers * $this->userWithArticleRatio)
             ->each(function ($user) use ($faker, $tags) {
                 $user->articles()
                     ->saveMany(
-                        factory(\App\Article::class)
+                        factory(\App\Models\Article::class)
                         ->times($faker->numberBetween(1, $this->maxArticlesByUser))
                         ->make()
                     )
@@ -89,14 +89,14 @@ class DummyDataSeeder extends Seeder
                     ->each(function ($article) use ($faker) {
                         $article->comments()
                             ->saveMany(
-                                factory(\App\Comment::class)
+                                factory(\App\Models\Comment::class)
                                 ->times($faker->numberBetween(1, $this->maxCommentsInArticle))
                                 ->make()
                             );
                     });
             });
 
-        $articles = \App\Article::all();
+        $articles = \App\Models\Article::all();
 
         $users->random((int) $users->count() * $this->usersWithFavoritesRatio)
             ->each(function ($user) use($faker, $articles) {
