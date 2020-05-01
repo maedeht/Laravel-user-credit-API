@@ -73,9 +73,6 @@ class ArticleService implements ArticleServiceInterface
 
     private function createInvoiceForStoringArticle($user, $transaction)
     {
-        $articleCostConfig = $this->getArticleCostConfig();
-        if(is_null($articleCostConfig))
-            return null;
         $user->invoices()->create([
             'invoice_no' => $transaction->id.'-no-'.rand(10,10000),
             'comment' => 'Article created!',

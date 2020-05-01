@@ -7,20 +7,25 @@ use App\Models\Comment;
 use App\Http\Requests\Api\CreateComment;
 use App\Http\Requests\Api\DeleteComment;
 use App\RealWorld\Transformers\CommentTransformer;
+use App\Services\CommentServiceIterface;
 
 class CommentController extends ApiController
 {
+    private $commentServiceIterface;
+
     /**
      * CommentController constructor.
      *
      * @param CommentTransformer $transformer
      */
-    public function __construct(CommentTransformer $transformer)
+    public function __construct(CommentServiceIterface $commentServiceIterface,
+                                CommentTransformer $transformer)
     {
+        $this->commentServiceIterface = $commentServiceIterface;
         $this->transformer = $transformer;
 
-        $this->middleware('auth.api')->except('index');
-        $this->middleware('auth.api:optional')->only('index');
+        $this->middleware('jwt.auth')->except(['index']);
+        $this->middleware('jwt.auth:optional')->only(['index']);
     }
 
     /**
@@ -45,10 +50,7 @@ class CommentController extends ApiController
      */
     public function store(CreateComment $request, Article $article)
     {
-        $comment = $article->comments()->create([
-            'body' => $request->input('comment.body'),
-            'user_id' => auth()->id(),
-        ]);
+        $comment = $this->commentServiceIterface->createComment($article, $request);
 
         return $this->respondWithTransformer($comment);
     }

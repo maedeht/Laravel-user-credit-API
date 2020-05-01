@@ -20,5 +20,10 @@ class ConfigSeeder extends Seeder
             'name' => 'article-cost',
             'value' => '5000'
         ]);
+
+        factory(\App\Models\Config::class, 1)->create([
+            'name' => 'comment-cost',
+            'value' => '5000'
+        ]);
     }
 }

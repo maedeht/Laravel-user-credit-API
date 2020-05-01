@@ -9,6 +9,7 @@ class ArticleTransformer extends Transformer
     public function transform($data)
     {
         return [
+            'id'              => $data['id'],
             'slug'              => $data['slug'],
             'title'             => $data['title'],
             'description'       => $data['description'],
