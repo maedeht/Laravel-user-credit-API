@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Tag;
 use App\Models\Article;
 use App\RealWorld\Paginate\Paginate;
 use App\RealWorld\Filters\ArticleFilter;
@@ -10,20 +9,25 @@ use App\Http\Requests\Api\CreateArticle;
 use App\Http\Requests\Api\UpdateArticle;
 use App\Http\Requests\Api\DeleteArticle;
 use App\RealWorld\Transformers\ArticleTransformer;
+use App\Services\ArticleServiceInterface;
 
 class ArticleController extends ApiController
 {
+    private $articleService;
+
     /**
      * ArticleController constructor.
      *
      * @param ArticleTransformer $transformer
      */
-    public function __construct(ArticleTransformer $transformer)
+    public function __construct(ArticleServiceInterface $articleService,
+                                ArticleTransformer $transformer)
     {
+        $this->articleService = $articleService;
         $this->transformer = $transformer;
 
-        $this->middleware('auth.api')->except(['index', 'show']);
-        $this->middleware('auth.api:optional')->only(['index', 'show']);
+        $this->middleware('jwt.auth')->except(['index', 'show']);
+        $this->middleware('jwt.auth:optional')->only(['index', 'show']);
     }
 
     /**
@@ -49,22 +53,7 @@ class ArticleController extends ApiController
     {
         $user = auth()->user();
 
-        $article = $user->articles()->create([
-            'title' => $request->input('article.title'),
-            'description' => $request->input('article.description'),
-            'body' => $request->input('article.body'),
-        ]);
-
-        $inputTags = $request->input('article.tagList');
-
-        if ($inputTags && ! empty($inputTags)) {
-
-            $tags = array_map(function($name) {
-                return Tag::firstOrCreate(['name' => $name])->id;
-            }, $inputTags);
-
-            $article->tags()->attach($tags);
-        }
+        $article = $this->articleService->createArticle($user, $request);
 
         return $this->respondWithTransformer($article);
     }

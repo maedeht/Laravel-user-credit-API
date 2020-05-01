@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Services\UserServiceInterface;
 use App\Http\Requests\Api\LoginUser;
 use App\Http\Requests\Api\RegisterUser;
 use App\RealWorld\Transformers\UserTransformer;
-use Tymon\JWTAuth\Contracts\Providers\Auth;
+use JWTAuth;
 
 class AuthController extends ApiController
 {
@@ -35,7 +36,7 @@ class AuthController extends ApiController
         $credentials = $request->only('user.email', 'user.password');
         $credentials = $credentials['user'];
 
-        if (! Auth::once($credentials)) {
+        if (! JWTAuth::attempt($credentials)) {
             return $this->respondFailedLogin();
         }
 

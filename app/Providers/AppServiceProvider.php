@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\ArticleService;
+use App\Services\ArticleServiceInterface;
 use App\Services\UserService;
 use App\Services\UserServiceInterface;
 use Schema;
@@ -37,5 +39,6 @@ class AppServiceProvider extends ServiceProvider
     private function injectServices()
     {
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(ArticleServiceInterface::class, ArticleService::class);
     }
 }

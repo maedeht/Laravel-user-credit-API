@@ -15,5 +15,10 @@ class ConfigSeeder extends Seeder
             'name' => 'registration-credit',
             'value' => '100000'
         ]);
+
+        factory(\App\Models\Config::class, 1)->create([
+            'name' => 'article-cost',
+            'value' => '5000'
+        ]);
     }
 }
