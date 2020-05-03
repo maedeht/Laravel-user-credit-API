@@ -28,6 +28,7 @@ class ArticleController extends ApiController
 
         $this->middleware('jwt.auth')->except(['index', 'show']);
         $this->middleware('jwt.auth:optional')->only(['index', 'show']);
+        $this->middleware('auth.active')->only(['store', 'update', 'destroy']);
     }
 
     /**

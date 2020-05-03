@@ -17,6 +17,7 @@ class UserController extends ApiController
         $this->transformer = $transformer;
 
         $this->middleware('auth.api');
+        $this->middleware('auth.active')->only(['update']);
     }
 
     /**

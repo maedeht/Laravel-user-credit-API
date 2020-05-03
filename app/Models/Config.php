@@ -16,4 +16,14 @@ class Config extends Model
     {
         return $query->where('name', 'registration-credit');
     }
+
+    public function scopeArticleCost($query)
+    {
+        return $query->where('name', 'article-cost');
+    }
+
+    public function scopeCommentCost($query)
+    {
+        return $query->where('name', 'comment-cost');
+    }
 }

@@ -10,15 +10,19 @@ namespace App\Services;
 
 
 use App\Models\Config;
+use App\Models\Invoice;
+use App\Models\Transaction;
 use App\Models\UserCredit;
+use App\Notifications\UserCreditWarningNotification;
 use Illuminate\Support\Facades\DB;
 
-class CommentService implements CommentServiceIterface
+class CommentService extends BaseService implements CommentServiceIterface
 {
     public function createComment($article, $request)
     {
         return DB::transaction(function () use ($article, $request) {
             $user = auth()->user();
+
             $comment = $article->comments()->create([
                 'body' => $request->input('comment.body'),
                 'user_id' => $user->id,
@@ -27,8 +31,8 @@ class CommentService implements CommentServiceIterface
             $transaction = $this->createTransactionForComment($user);
             if($transaction)
             {
-                $this->createInvoiceForComment($user, $transaction);
-                $this->updateUserCreditForCreatingComment($user);
+                Invoice::createInvoiceForComment($user->id, $transaction->id);
+                $this->updateUserCreditForCreatingComment($user->id);
             }
 
             return $comment;
@@ -36,25 +40,12 @@ class CommentService implements CommentServiceIterface
 
     }
 
-    private function getCommentCostConfig()
-    {
-        $config = Config::where('name','comment-cost')->first();
-        if(is_null($config))
-            return null;
-
-        return $config->value;
-
-    }
-
     private function createTransactionForComment($user)
     {
         if($this->getUserCommentsCount($user) <= 5)
             return false;
-        $user->transactions()->create([
-            'debit' => $this->getCommentCostConfig()
-        ]);
-
-        return $user->transactions()->orderBy('id', 'DESC')->first();
+        return Transaction::createTransactionForComment(
+                $user->id, $this->getCommentCreditConfig());
     }
 
     private function getUserCommentsCount($user)
@@ -62,23 +53,14 @@ class CommentService implements CommentServiceIterface
         return count($user->comments);
     }
 
-    private function createInvoiceForComment($user, $transaction)
+    private function updateUserCreditForCreatingComment($user_id)
     {
-        $user->invoices()->create([
-            'invoice_no' => $transaction->id.'-no-'.rand(10,10000),
-            'comment' => 'Article created!',
-            'transaction_id' => $transaction->id
-        ]);
-    }
+        $credit = UserCredit::where('user_id', $user_id)->first();
+        if(is_null($credit))
+            return false;
+        $value = $credit->value - (int) $this->getCommentCreditConfig();
+        $credit->updateCredit($value);
 
-    private function updateUserCreditForCreatingComment($user)
-    {
-        $credit = UserCredit::firstOrCreate(['user_id' => $user->id]);
-
-        $credit->update([
-            'value' => $credit->value - (int) $this->getCommentCostConfig()
-        ]);
-
-        return $user;
+        return true;
     }
 }

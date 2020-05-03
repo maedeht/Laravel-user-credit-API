@@ -19,12 +19,12 @@ class ArticleTransformer extends Transformer
             'updatedAt'         => $data['updated_at']->toAtomString(),
             'favorited'         => $data['favorited'],
             'favoritesCount'    => $data['favoritesCount'],
-            'author' => [
+            'author' => isset($data['user']) ? [
                 'username'  => $data['user']['username'],
                 'bio'       => $data['user']['bio'],
                 'image'     => $data['user']['image'],
                 'following' => $data['user']['following'],
-            ]
+            ] : []
         ];
     }
 }

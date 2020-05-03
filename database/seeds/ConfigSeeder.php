@@ -25,5 +25,10 @@ class ConfigSeeder extends Seeder
             'name' => 'comment-cost',
             'value' => '5000'
         ]);
+
+        factory(\App\Models\Config::class, 1)->create([
+            'name' => 'user-credit-recharge',
+            'value' => '20000'
+        ]);
     }
 }

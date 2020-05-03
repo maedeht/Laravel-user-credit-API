@@ -9,12 +9,13 @@
 namespace App\Services;
 
 use App\Models\Config;
+use App\Models\Invoice;
 use App\Models\Tag;
 use App\Models\Transaction;
 use App\Models\UserCredit;
 use Illuminate\Support\Facades\DB;
 
-class ArticleService implements ArticleServiceInterface
+class ArticleService extends BaseService implements ArticleServiceInterface
 {
     public function createArticle($user, $request)
     {
@@ -28,9 +29,12 @@ class ArticleService implements ArticleServiceInterface
             $inputTags = $request->input('article.tagList');
 
             $this->addTagsToArticles($article, $inputTags);
-            $transaction = $this->createTransactionForStoringArticle($user);
-            $this->userCreditUpdateForArticleCreation($user);
-            $this->createInvoiceForStoringArticle($user, $transaction);
+            $transaction = Transaction::createTransactionForArticle(
+                                    $user->id,
+                                    $this->getArticleCreditConfig()
+                                );
+            Invoice::createInvoiceForArticle($user->id, $transaction->id);
+            $this->userCreditUpdateForArticleCreation($user->id);
 
             return $article;
         });
@@ -49,45 +53,14 @@ class ArticleService implements ArticleServiceInterface
         }
     }
 
-    private function getArticleCostConfig()
+    private function userCreditUpdateForArticleCreation($user_id)
     {
-        $config = Config::where('name','article-cost')->first();
-        if(is_null($config))
-            return null;
+        $credit = UserCredit::where('user_id', $user_id)->first();
 
-        return $config->value;
+        $value = $credit->value - (int) $this->getArticleCreditConfig();
 
-    }
+        $credit->updateCredit($value);
 
-    private function createTransactionForStoringArticle($user)
-    {
-        $articleCostConfig = $this->getArticleCostConfig();
-        if(is_null($articleCostConfig))
-            return null;
-        $user->transactions()->create([
-            'debit' => (int) $articleCostConfig
-        ]);
-
-        return $user->transactions()->orderBy('id', 'DESC')->first();
-    }
-
-    private function createInvoiceForStoringArticle($user, $transaction)
-    {
-        $user->invoices()->create([
-            'invoice_no' => $transaction->id.'-no-'.rand(10,10000),
-            'comment' => 'Article created!',
-            'transaction_id' => $transaction->id
-        ]);
-    }
-
-    private function userCreditUpdateForArticleCreation($user)
-    {
-        $credit = UserCredit::firstOrCreate(['user_id' => $user->id]);
-
-        $credit->update([
-            'value' => $credit->value - (int) $this->getArticleCostConfig()
-        ]);
-
-        return $user;
+        return true;
     }
 }

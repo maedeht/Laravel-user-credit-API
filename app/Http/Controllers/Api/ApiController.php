@@ -41,11 +41,12 @@ class ApiController extends Controller
     {
         $this->checkTransformer();
 
-        if ($data instanceof Collection) {
-            $data = $this->transformer->collection($data);
-        } else {
-            $data = $this->transformer->item($data);
-        }
+        if(!empty($data))
+            if ($data instanceof Collection) {
+                $data = $this->transformer->collection($data);
+            } else {
+                $data = $this->transformer->item($data);
+            }
 
         return $this->respond($data, $statusCode, $headers);
     }

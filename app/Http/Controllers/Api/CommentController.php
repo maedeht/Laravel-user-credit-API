@@ -26,6 +26,7 @@ class CommentController extends ApiController
 
         $this->middleware('jwt.auth')->except(['index']);
         $this->middleware('jwt.auth:optional')->only(['index']);
+        $this->middleware('auth.active')->only(['store', 'destroy']);
     }
 
     /**

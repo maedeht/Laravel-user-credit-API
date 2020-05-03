@@ -9,26 +9,32 @@
 namespace App\Services;
 
 
+use App\Models\Config;
+use App\Notifications\UserCreditWarningNotification;
+
 class BaseService
 {
-    protected function checkForRechangeEmail()
+    protected function getRegistrationCreditConfig()
     {
-        $user = auth()->user();
+        $config = Config::registerCredit()->first();
 
-        if($this->checkUserCredit(20))
-        {
-            // send mail
-        }
+        return $config ? $config->value : '';
+
     }
 
-    protected function checkForMakingUserInactive()
+    protected function getArticleCreditConfig()
     {
-        $user = auth()->user();
+        $config = Config::articleCost()->first();
+
+        return $config ? $config->value : '';
+
     }
 
-    private function checkUserCredit($value)
+    protected function getCommentCreditConfig()
     {
-        $user = auth()->user();
-        
+        $config = Config::commentCost()->first();
+
+        return $config ? $config->value : '';
+
     }
 }

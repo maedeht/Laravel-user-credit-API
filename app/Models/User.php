@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'bio', 'image'
+        'username', 'email', 'password', 'bio', 'image', 'active'
     ];
 
     /**
@@ -105,5 +105,20 @@ class User extends Authenticatable
     public function credit()
     {
         return $this->hasOne(UserCredit::class);
+    }
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    public function deleteInactiveUser()
+    {
+        auth()->logout();
+
+        if($this->delete())
+            return true;
+
+        return false;
     }
 }

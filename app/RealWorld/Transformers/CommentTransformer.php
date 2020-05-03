@@ -13,12 +13,12 @@ class CommentTransformer extends Transformer
             'body'      => $data['body'],
             'createdAt' => $data['created_at']->toAtomString(),
             'updatedAt' => $data['updated_at']->toAtomString(),
-            'author' => [
+            'author' => isset($data['user']) ? [
                 'username'  => $data['user']['username'],
                 'bio'       => $data['user']['bio'],
                 'image'     => $data['user']['image'],
                 'following' => $data['user']['following'],
-            ]
+            ] : []
         ];
     }
 }

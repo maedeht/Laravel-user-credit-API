@@ -6,7 +6,7 @@ use App\Models\Config;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class UserService implements UserServiceInterface
+class UserService extends BaseService implements UserServiceInterface
 {
     public function registerUser($request)
     {
@@ -24,29 +24,14 @@ class UserService implements UserServiceInterface
 
     private function storeRegistrationCredit($user)
     {
-        $registration_config = $this->getRegistrationCreditConfig();
-
-        if(is_null($registration_config))
-            return [];
-
         $user->transactions()->create([
-            'credit' => $registration_config
+            'credit' => $this->getRegistrationCreditConfig()
         ]);
 
         $user->credit()->create([
-            'value' => $registration_config
+            'value' => $this->getRegistrationCreditConfig()
         ]);
 
         return $user;
-    }
-
-    private function getRegistrationCreditConfig()
-    {
-        $config = Config::where('name','registration-credit')->first();
-        if(is_null($config))
-            return null;
-
-        return $config->value;
-
     }
 }

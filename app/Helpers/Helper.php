@@ -17,3 +17,4 @@ if (! function_exists('remove_words')) {
         return '';
     }
 }
+

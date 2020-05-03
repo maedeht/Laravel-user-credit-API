@@ -16,10 +16,14 @@ class CreateUserCreditsTable extends Migration
         Schema::create('user_credits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('value');
+            $table->boolean('LowCreditEmailSent')->default(false);
             $table->unsignedInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

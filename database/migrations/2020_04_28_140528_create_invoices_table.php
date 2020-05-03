@@ -21,8 +21,15 @@ class CreateInvoicesTable extends Migration
             $table->unsignedInteger('transaction_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('transaction_id')->references('id')->on('transactions');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('transaction_id')
+                ->references('id')
+                ->on('transactions')
+                ->onDelete('cascade');
         });
     }
 

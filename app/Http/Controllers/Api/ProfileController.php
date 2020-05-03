@@ -18,6 +18,7 @@ class ProfileController extends ApiController
 
         $this->middleware('auth.api')->except('show');
         $this->middleware('auth.api:optional')->only('show');
+        $this->middleware('auth.active')->only(['follow', 'unFollow']);
     }
 
     /**

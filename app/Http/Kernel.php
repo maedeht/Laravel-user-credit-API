@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckIfUserDisabled;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -59,6 +60,7 @@ class Kernel extends HttpKernel
         'auth.api' => \App\Http\Middleware\AuthenticateWithJWT::class,
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'auth.active' => \App\Http\Middleware\CheckIfUserDisabled::class,
         'cors' => \Barryvdh\Cors\HandleCors::class,
     ];
 }
