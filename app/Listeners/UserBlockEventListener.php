@@ -30,7 +30,7 @@ class UserBlockEventListener
      */
     public function handle(UserBlockEvent $event)
     {
-        $time = Carbon::now()->addSecond(30);
+        $time = Carbon::now()->addSecond((int) env('INACTIVE_USER_DELETE','24'));
 
         DeleteBlockedUserRecords::dispatch($event->user)->delay($time);
 
