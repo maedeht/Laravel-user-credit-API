@@ -6,6 +6,8 @@ use App\Services\ArticleService;
 use App\Services\ArticleServiceInterface;
 use App\Services\CommentService;
 use App\Services\CommentServiceIterface;
+use App\Services\InvoiceService;
+use App\Services\InvoiceServiceInterface;
 use App\Services\UserService;
 use App\Services\UserServiceInterface;
 use Schema;
@@ -43,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(ArticleServiceInterface::class, ArticleService::class);
         $this->app->bind(CommentServiceIterface::class, CommentService::class);
+        $this->app->bind(InvoiceServiceInterface::class, InvoiceService::class);
     }
 }

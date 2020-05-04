@@ -10,6 +10,7 @@ class ProfileTransformer extends Transformer
     {
         return [
             'username'  => $data['username'],
+            'credit'  => $data['credit'],
             'bio'       => $data['bio'],
             'image'     => $data['image'],
             'following' => $data['following'],

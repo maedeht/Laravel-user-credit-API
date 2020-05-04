@@ -29,6 +29,7 @@ class ProfileController extends ApiController
      */
     public function show(User $user)
     {
+        $user['credit'] = $user->credit ? $user->credit->value : 0;
         return $this->respondWithTransformer($user);
     }
 

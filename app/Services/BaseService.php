@@ -12,7 +12,7 @@ namespace App\Services;
 use App\Models\Config;
 use App\Notifications\UserCreditWarningNotification;
 
-class BaseService
+abstract class BaseService
 {
     protected function getRegistrationCreditConfig()
     {
